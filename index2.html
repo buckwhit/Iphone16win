@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect to Chrome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .message {
+            margin-top: 50px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+    <script>
+        // Función para redirigir a Chrome
+        function redirectToChrome() {
+            const url = "https://www.google.com"; // Cambia esto por tu enlace deseado
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+                if (isIOS) {
+                    // Mostrar un mensaje para iOS
+                    alert("Please copy this link and open it in Chrome: " + url);
+                } else {
+                    // Intentar abrir en Chrome en Android
+                    const chromeAppUrl = `intent://${url}#Intent;scheme=http;package=com.android.chrome;end`;
+                    window.location.href = chromeAppUrl;
+
+                    // Si no se abre en Chrome, redirigir a la Play Store
+                    setTimeout(() => {
+                        window.location.href = "https://play.google.com/store/apps/details?id=com.android.chrome";
+                    }, 1000); // 1 segundo de espera
+                }
+            } else {
+                // Mostrar un mensaje para dispositivos de escritorio
+                document.body.innerHTML = `<div class="message">This feature is only available on mobile devices. Please open this link on your phone.</div>`;
+            }
+        }
+
+        // Ejecutar la función al cargar la página
+        window.onload = redirectToChrome;
+    </script>
+</head>
+<body>
+    <p>Redirecting to Chrome...</p>
+</body>
+</html>
